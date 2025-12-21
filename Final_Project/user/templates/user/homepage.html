@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% block main_content %}
+{% include 'user/carousel.html' %}
+
+<!-- Featured Products Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Title -->
+        <h2 class="font-manrope font-bold text-3xl text-gray-900 mb-10 border-b-4 border-orange-500 inline-block">
+            Featured Products
+        </h2>
+
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-4 gap-12">
+            {% for p in product %}
+            <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 overflow-hidden group flex flex-col">
+                <!-- Product Image -->
+                <a href="">
+                    <img src="{{ p.image.url }}" alt="{{ p.name }}" 
+                         class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                </a>
+
+                <!-- Product Info -->
+                <div class="p-4 flex flex-col flex-grow">
+                    <h3 class="text-gray-900 font-semibold text-lg mb-1 truncate group-hover:text-orange-600">
+                        {{ p.name }}
+                    </h3>
+                    <p class="text-gray-500 text-sm mb-3 truncate">
+                        {{ p.category.name }}
+                    </p>
+
+                    <!-- Price + Button -->
+                    <div class="mt-auto flex items-center justify-between">
+                        <span class="text-orange-600 font-semibold text-lg">
+                            Rs. {{ p.price }}
+                        </span>
+                        <button class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="col-span-4 text-center text-gray-500">No products available</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

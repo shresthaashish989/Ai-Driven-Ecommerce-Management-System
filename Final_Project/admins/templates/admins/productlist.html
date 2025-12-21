@@ -1,0 +1,60 @@
+{% extends 'admins/index.html' %}
+{% block main_admincontent %}
+
+<div class="sm:ml-64 p-6 bg-gray-100 min-h-screen">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-2xl font-bold mb-6 text-orange-600 border-b pb-4">
+            Product List
+        </h2>
+
+        <div class="overflow-x-auto w-full">
+            <table class="min-w-full border border-gray-200 text-sm text-left text-gray-700">
+                <thead class="bg-orange-500 text-white text-xs uppercase">
+                    <tr>
+                        <th class="px-6 py-3">#</th>
+                        <th class="px-6 py-3">Product</th>
+                        <th class="px-6 py-3">Price</th>
+                        <th class="px-6 py-3">Category</th>
+                        <th class="px-6 py-3">Image</th>
+                        <th class="px-6 py-3 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for p in product %}
+                    <tr class="hover:bg-orange-50 transition">
+                        <td class="px-6 py-4 font-medium">{{ forloop.counter }}</td>
+                        <td class="px-6 py-4">{{ p.name }}</td>
+                        <td class="px-6 py-4">Rs. {{ p.price }}</td>
+                        <td class="px-6 py-4">{{ p.category.name }}</td>
+                        <td class="px-6 py-4">
+                            {% if p.image %}
+                                <img src="/{{ p.image}}" alt="{{ p.name }}" class="w-16 h-16 object-cover rounded">
+                            {% else %}
+                                <span class="text-gray-400">No image</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-center space-x-2">
+                            <a href="{}" 
+                               class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                                Edit
+                            </a>
+                            <a href="{}" 
+                               class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-6 text-gray-500">
+                            No products available.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
