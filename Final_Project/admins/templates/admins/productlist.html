@@ -34,11 +34,11 @@
                             {% endif %}
                         </td>
                         <td class="px-6 py-4 text-center space-x-2">
-                            <a href="{}" 
+                            <a href="{%url 'updateproduct' p.id%}" 
                                class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                                 Edit
                             </a>
-                            <a href="{}" 
+                            <a href="{%url 'deleteproduct' p.id%}" 
                                class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
                                 Delete
                             </a>

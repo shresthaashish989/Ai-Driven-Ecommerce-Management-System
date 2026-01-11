@@ -2,50 +2,75 @@
 {% block main_admincontent %}
 
 <div class="sm:ml-64 p-6 bg-gray-100 min-h-screen">
-    <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-bold mb-6 text-orange-600 border-b pb-4">
-            Category List
-        </h2>
+<div class="bg-white shadow-lg rounded-xl p-6">
+<h2 class="text-2xl font-bold mb-6 text-orange-600 border-b pb-4">
+    Category List
+</h2>
+ {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="flex items-center w-full max-w-xs p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+                    <span class="ms-3 text-sm font-normal">{{ msg }}</span>
+                </div>
+            {% endif %}
+{% endfor %}
 
-        <div class="overflow-x-auto w-full">
-            <table class="min-w-full border border-gray-200 text-sm text-left text-gray-700">
-                <thead class="bg-orange-500 text-white text-xs uppercase">
-                    <tr>
-                        <th class="px-6 py-3">#</th>
-                        <th class="px-6 py-3">Category Name</th>
-                        <th class="px-6 py-3">Description</th>
-                        <th class="px-6 py-3 text-center">Actions</th>
-                    </tr>
-                </thead>
+<div class="overflow-x-auto">
+    <table class="min-w-full border border-gray-200 text-sm text-left text-gray-700">
+        <thead class="bg-orange-500 text-white text-xs uppercase">
+            <tr>
+                <th class="px-6 py-3">#</th>
+                <th class="px-6 py-3">Category Name</th>
+                <th class="px-6 py-3">Description</th>
+                <th class="px-6 py-3 text-center">Actions</th>
+            </tr>
+        </thead>
 
-                <tbody class="divide-y divide-gray-200">
-                    {% for c in category %}
-                    <tr class="hover:bg-orange-50 transition">
-                        <td class="px-6 py-4 font-medium">{{ forloop.counter }}</td>
-                        <td class="px-6 py-4 font-semibold">{{ c.category_name }}</td>
-                        <td class="px-6 py-4 text-gray-600">{{ c.description|default:"—" }}</td>
-                        <td class="px-6 py-4 text-center space-x-2">
-                            <a href="{}" 
-                               class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                                Edit
-                            </a>
-                            <a href="{}" 
-                               class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" class="text-center py-6 text-gray-500">
-                            No categories available.
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <tbody class="divide-y divide-gray-200">
+            {% for c in category %}
+            <tr class="hover:bg-orange-50 transition">
+                <td class="px-6 py-4 font-medium">
+                    {{ forloop.counter }}
+                </td>
+
+                <td class="px-6 py-4 font-semibold">
+                    {{ c.category_name }}
+                </td>
+
+                <td class="px-6 py-4 text-gray-600">
+                    {{ c.description|default:"—" }}
+                </td>
+
+                <!-- ACTION BUTTONS -->
+                <td class="px-6 py-4">
+                    <div class="flex justify-center gap-3">
+
+                    <a href="{% url 'updatecategory' c.id %}"
+class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+Edit
+</a>
+
+<a href="{% url 'deletecategory' c.id %}"
+class="inline-flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+Delete
+</a>
+
+
+                        
+
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center py-6 text-gray-500">
+                    No categories available.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
 </div>
 
 {% endblock %}

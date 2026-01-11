@@ -1,0 +1,44 @@
+{% extends 'admins/index.html' %}
+{% load tailwind_filters %}
+{% block main_admincontent %}
+
+<div class="max-w-2xl mx-auto mt-10 bg-white shadow-md rounded-lg p-8">
+    <!-- Title -->
+    <h2 class="text-2xl font-bold mb-6 text-orange-600 border-b pb-2">
+        Add / Update Category
+    </h2>
+
+    <!-- Form -->
+    <form class="max-w-md mx-auto" method="POST">
+        {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="flex items-center w-full max-w-xs p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+                    <span class="ms-3 text-sm font-normal">{{ msg }}</span>
+                </div>
+            {% endif %}
+
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="flex items-center w-full max-w-xs p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+                    <span class="ms-3 text-sm font-normal">{{ msg }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <!-- Buttons -->
+        <div class="flex justify-end space-x-4 mt-4">
+            <a href="{% url 'categorylist' %}" 
+               class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg">
+                Cancel
+            </a>
+            <button type="submit" 
+                    class="px-5 py-2.5 text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 rounded-lg">
+                Save Category
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

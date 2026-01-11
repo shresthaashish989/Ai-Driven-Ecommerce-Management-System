@@ -62,7 +62,7 @@
           </svg>
         </button>
         <ul id="dropdown-products" class="hidden py-2 space-y-2">
-          <li><a href="{}" class="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-orange-500">Add Product</a></li>
+          <li><a href="{%url 'addproduct'%}" class="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-orange-500">Add Product</a></li>
           <li><a href="{% url 'productlist'%}" class="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-orange-500">Product List</a></li>
         </ul>
       </li>
@@ -82,7 +82,7 @@
           </svg>
         </button>
         <ul id="dropdown-categories" class="hidden py-2 space-y-2">
-          <li><a href="{}" class="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-orange-500">Add Category</a></li>
+          <li><a href="{%url 'addcategory'%}" class="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-orange-500">Add Category</a></li>
           <li><a href="{%url 'categorylist'%}" class="flex items-center w-full p-2 pl-11 rounded-lg hover:bg-orange-500">Category List</a></li>
         </ul>
       </li>

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'admins',
     "crispy_forms",
     "crispy_tailwind",
+    'django_filters',
     
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
