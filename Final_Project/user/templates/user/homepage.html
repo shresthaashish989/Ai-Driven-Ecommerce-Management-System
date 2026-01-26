@@ -15,7 +15,7 @@
             {% for p in product %}
             <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 overflow-hidden group flex flex-col">
                 <!-- Product Image -->
-                <a href="">
+                <a href="{%url 'productdetail' p.id%}">
                     <img src="{{ p.image.url }}" alt="{{ p.name }}" 
                          class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
                 </a>
