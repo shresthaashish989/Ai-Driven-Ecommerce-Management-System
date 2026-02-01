@@ -2,14 +2,15 @@ from django.shortcuts import render,redirect,get_object_or_404
 from product.views import *
 from product.forms import *
 from django.contrib import messages
+from user.auth import admin_only
 
 # Create your views here.
 
-
+@admin_only
 def homepage(request):
     return render(request,'admins/homepage.html')
 
-
+@admin_only
 def productlist(request):
     product=Product.objects.all()
     context={
@@ -17,6 +18,7 @@ def productlist(request):
     }
     return render(request,'admins/productlist.html',context)
 
+@admin_only
 def categorylist(request):
     category=Category.objects.all()
     context={
@@ -25,7 +27,7 @@ def categorylist(request):
     return render(request,'admins/categorylist.html',context)
 
 
-
+@admin_only
 def addcategory(request):
     if request.method=="POST":
         form=CategoryForm(request.POST)
@@ -42,7 +44,7 @@ def addcategory(request):
     return render(request, 'admins/addcategory.html',forms)
 
 
-
+@admin_only
 def addproduct(request):
     if request.method=="POST":
         form=ProductForm(request.POST,request.FILES)
@@ -58,7 +60,7 @@ def addproduct(request):
     }
     return render(request,"admins/addproduct.html",form)
 
-
+@admin_only
 def updateproduct(request,product_id):
     instance=Product.objects.get(id=product_id)
     if request.method=="POST":
@@ -75,14 +77,14 @@ def updateproduct(request,product_id):
     }
     return render(request,'admins/updateproduct.html',forms)
 
-
+@admin_only
 def deleteproduct(request,product_id):
     product=Product.objects.get(id=product_id)
     product.delete()
     messages.add_message(request,messages.SUCCESS,"product is delete succesfully")
     return redirect('productlist/')
 
-
+@admin_only
 def updatecategory(request,category_id):
     instace=Category.objects.get(id=category_id)
     if request.method=="POST":
@@ -103,7 +105,7 @@ def updatecategory(request,category_id):
     
      
     
-
+@admin_only
 def deletecategory(request, category_id):
     category=Category.objects.get(id=category_id)
     category.delete()
