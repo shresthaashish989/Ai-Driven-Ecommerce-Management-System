@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block main_content %}
+
+<div class="p-6 bg-gray-100 w-full">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        
+        <!-- Page Title -->
+        <h2 class="text-2xl font-bold mb-6 text-orange-600 border-b pb-4 text-center">
+            🧾 My Orders
+        </h2>
+
+        <!-- Messages -->
+        {% if messages %}
+            {% for msg in messages %}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-300 rounded-lg text-center">
+                        {{ msg }}
+                    </div>
+                {% elif msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-300 rounded-lg text-center">
+                        {{ msg }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        {% if orders %}
+        <div class="overflow-x-auto w-full">
+            <table class="min-w-full border border-gray-200 text-sm text-left text-gray-700">
+                <thead class="bg-orange-500 text-white text-xs uppercase">
+                    <tr>
+                        <th class="px-4 py-3">#</th>
+                        <th class="px-4 py-3">Product</th>
+                        <th class="px-4 py-3 text-center">Quantity</th>
+                        <th class="px-4 py-3 text-center">Total Price</th>
+                        <th class="px-4 py-3 text-center">Payment Method</th>
+                        <th class="px-4 py-3 text-center">Status</th>
+                        <th class="px-4 py-3">Email</th>
+                        <th class="px-4 py-3">Contact No</th>
+                        <th class="px-4 py-3">Address</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for order in orders %}
+                    <tr class="hover:bg-orange-50 transition">
+                        <td class="px-4 py-2 font-medium">{{ forloop.counter }}</td>
+                        <td class="px-4 py-2">{{ order.product.name }}</td>
+                        <td class="px-4 py-2 text-center">{{ order.quantity }}</td>
+                        <td class="px-4 py-2 text-center font-semibold">Rs. {{ order.total_price }}</td>
+                        <td class="px-4 py-2 text-center">{{ order.payment_method }}</td>
+                        <td class="px-4 py-2 text-center">
+                            {% if order.payment_method == "COD" %}
+                                Pending
+                            {% else %}
+                                Completed
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-2">{{ order.email }}</td>
+                        <td class="px-4 py-2">{{ order.contact }}</td>
+                        <td class="px-4 py-2">{{ order.address }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-10">
+            <h2 class="text-gray-500 text-lg">You have no orders yet 🛍️</h2>
+            <a href="{% url 'cart_list' %}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                Go to Cart
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

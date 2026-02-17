@@ -58,7 +58,7 @@
         </a>
 
         <!-- Cart -->
-        <a href="{}" class="relative hover:bg-orange-600 p-2 rounded">
+        <a href="{% url 'cart_list'%}" class="relative hover:bg-orange-600 p-2 rounded">
           🛒
           <span class="absolute -top-1 -right-1 bg-red-600 text-xs px-1 rounded-full">
             {{ items|default_if_none:''|length }}
@@ -105,7 +105,7 @@
     <div class="flex flex-wrap justify-center gap-4 py-2 border-t border-orange-400 mt-2">
       <a href="{% url 'homepage' %}" class="hover:bg-orange-600 px-3 py-2 rounded">Home</a>
       <a href="{% url 'productpage' %}" class="hover:bg-orange-600 px-3 py-2 rounded">Products</a>
-      <a href="#" class="hover:bg-orange-600 px-3 py-2 rounded">About</a>
+      <a href="{%url 'about'%}" class="hover:bg-orange-600 px-3 py-2 rounded">About</a>
       <a href="#" class="hover:bg-orange-600 px-3 py-2 rounded">Services</a>
       <a href="#" class="hover:bg-orange-600 px-3 py-2 rounded">Contact</a>
     </div>
