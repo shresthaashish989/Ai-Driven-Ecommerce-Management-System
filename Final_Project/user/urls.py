@@ -16,6 +16,8 @@ urlpatterns=[
     path('remove/<int:cart_id>/', deletecartlist, name='remove'),
     path('order/<int:product_id>/<int:cart_id>/', orderitems, name="order"),
     path('myorder',orderlist, name='myorder'),
+    path('esewaform',EsewaView.as_view(), name='esewaform'),
+    path('esewaverify/<int:order_id>/<int:cart_id>', esewaverify, name='esewaverify'),
 
 
 ]

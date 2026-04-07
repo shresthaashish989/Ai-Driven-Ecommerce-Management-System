@@ -7,6 +7,10 @@ from .filter import ProductFilter
 from .forms import *
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
+from django.views import View
+from django.urls import reverse
+import json
+from .ai_recomanndation import recommend_products   
 
 
 # User registration view
@@ -80,12 +84,17 @@ def productpage(request):
 
 
 # Product detail page
-def productdetail(request, product_id):
-    product = Product.objects.get(id=product_id)
-    context = {'product': product}
-    return render(request, 'user/productdetail.html', context)
-
+def productdetail(request,product_id):
+    product=Product.objects.get(id=product_id)
+    recommendations = recommend_products(product_id)
+    data={
+        'product':product,
+        'recommendations': recommendations
+    }
+    return render(request,'user/productdetail.html',data)
 @login_required
+
+
 def add_to_cart(request, product_id):
     user = request.user
     product = Product.objects.get(id=product_id)
@@ -98,7 +107,7 @@ def add_to_cart(request, product_id):
     else:
         items = Cart.objects.create(user=user, product=product)
         messages.add_message(request, messages.SUCCESS, "Added Product Successfully in Cart")
-        return redirect('/productpage')
+        return redirect('productpage')
 
 
 @login_required
@@ -153,7 +162,7 @@ def orderitems(request, product_id, cart_id):
                 return redirect("cart_list")
 
             elif payment_method.lower().strip() == "esewa":
-                pass
+                return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart.id))
 
             elif payment_method.lower().strip() == "khalti":
                 pass
@@ -177,5 +186,77 @@ def orderlist(request):
         'orders':orders
     }
     return render(request,'user/myorder.html',data)
+
+
+
+import hmac 
+import hashlib
+import uuid
+import base64
+
+
+class EsewaView(View):
+    def get(self, request, *args, **kwargs):
+
+        o_id = request.GET.get('o_id')
+        c_id = request.GET.get('c_id')
+
+        if not o_id or not c_id:
+            return redirect('cartlist')
+
+        order = Order.objects.filter(id=o_id).first()
+        cart = Cart.objects.filter(id=c_id).first()
+
+        if not order or not cart:
+            return redirect('cartlist')
+
+        uuid_val = uuid.uuid4()
+
+        def genSha256(key, message):
+            key = key.encode('utf-8')
+            message = message.encode('utf-8')
+            hmac_sha256 = hmac.new(key, message, hashlib.sha256)
+            return base64.b64encode(hmac_sha256.digest()).decode('utf-8')
+
+        secret_key = '8gBm/:&EnhH.1/q'
+        data_to_sign = f"total_amount={order.total_price},transaction_uuid={uuid_val},product_code=EPAYTEST"
+        result = genSha256(secret_key, data_to_sign)
+
+        data = {
+            'amount': order.product.price,
+            'total_amount': order.total_price,
+            'transaction_uuid': uuid_val,
+            'product_code': 'EPAYTEST',
+            'signature': result,
+        }
+
+        context = {
+            'order': order,
+            'data': data,
+            'cart': cart
+        }
+
+        return render(request, 'user/esewaform.html', context)
+    
+
+
+
+def esewaverify(request, order_id,cart_id):
+    if request.method == "GET":
+        data=request.GET.get('data')
+        decode_data= base64.b64decode(data).decode('utf-8')
+        map_data=json.loads(decode_data)
+        order=Order.objects.get(id=order_id)
+        cart=Cart.objects.get(id=cart_id)
+
+        if map_data.get('status')=='COMPLETE':
+            order.status =True
+            order.save()
+            cart.delete()
+            messages.add_message(request,messages.SUCCESS,"payement succesfull")
+            return redirect('myorder')
+        else:
+            messages.add_message(request,messages.ERROR,"Failed to make a payement system")
+            return redirect('myorder')
 
 

@@ -108,4 +108,58 @@
   </div>
 </div>
 
+
+
+
+{% if recommendations %}
+<div class="max-w-6xl mx-auto mt-10">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6">Recommended Products</h2>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+    {% for item in recommendations %}
+      <a href="{% url 'productdetail' item.id %}"
+         class="bg-white rounded-xl shadow hover:shadow-md p-4 transition-all">
+
+        <div class="w-full h-40 mb-3 flex justify-center items-center bg-gray-50 border rounded-lg">
+          {% if item.image %}
+            <img src="{{ item.image.url }}" class="h-full object-contain" />
+          {% else %}
+            <span class="text-gray-400 text-sm">No Image</span>
+          {% endif %}
+        </div>
+
+        <h3 class="text-sm font-semibold text-gray-800 truncate">{{ item.name }}</h3>
+        <p class="text-orange-500 font-bold text-sm">Rs. {{ item.price }}</p>
+
+      </a>
+    {% endfor %}
+
+  </div>
+</div>
+{% endif %}
+
+<!-- Quantity Script -->
+<script>
+  const decreaseBtn = document.getElementById('decrease');
+  const increaseBtn = document.getElementById('increase');
+  const quantityInput = document.getElementById('quantity');
+
+  decreaseBtn.addEventListener('click', () => {
+    let value = parseInt(quantityInput.value);
+    if (value > 1) {
+      quantityInput.value = value - 1;
+    }
+  });
+
+  increaseBtn.addEventListener('click', () => {
+    let value = parseInt(quantityInput.value);
+    const max = parseInt(quantityInput.max);
+    if (value < max) {
+      quantityInput.value = value + 1;
+    }
+  });
+</script>
+
+
 {% endblock %}
